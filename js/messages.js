@@ -1,51 +1,44 @@
+let currentConversation = null;
+let conversations = [];
+
 document.addEventListener('DOMContentLoaded', function() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const username = localStorage.getItem('username');
-    
-    if (!isLoggedIn || isLoggedIn !== 'true') {
-        window.location.href = 'index.html';
-        return;
-    }
-    
-    document.getElementById('username-display').textContent = username;
-    
-    let currentConversation = null;
-    let conversations = [];
+    setupPage();
     
     loadConversations();
     loadUsersForNewConversation();
     
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn.addEventListener('click', function() {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('username');
-        window.location.href = 'index.html';
-    });
-    
     const searchInput = document.getElementById('search-conversations');
-    searchInput.addEventListener('input', function() {
-        filterConversations(this.value);
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            filterConversations(this.value);
+        });
+    }
     
     const messageInput = document.getElementById('message-input');
-    messageInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
+    if (messageInput) {
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    }
     
     const newConversationForm = document.getElementById('new-conversation-form');
-    newConversationForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        createNewConversation();
-    });
+    if (newConversationForm) {
+        newConversationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            createNewConversation();
+        });
+    }
     
     const chatbotInput = document.getElementById('chatbot-input');
-    chatbotInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendToChatbot();
-        }
-    });
+    if (chatbotInput) {
+        chatbotInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendToChatbot();
+            }
+        });
+    }
 });
 
 function loadConversations() {
@@ -114,10 +107,19 @@ function selectConversation(conversationId) {
         document.querySelectorAll('.conversation-item').forEach(item => {
             item.classList.remove('active');
         });
-        event.currentTarget.classList.add('active');
         
-        document.getElementById('chat-header').innerHTML = `<h3>${currentConversation.participant}</h3>`;
-        document.getElementById('chat-input').style.display = 'block';
+        const selectedItem = Array.from(document.querySelectorAll('.conversation-item')).find(item => {
+            return item.onclick && item.onclick.toString().includes(conversationId);
+        });
+        if (selectedItem) {
+            selectedItem.classList.add('active');
+        }
+        
+        const chatHeader = document.getElementById('chat-header');
+        const chatInput = document.getElementById('chat-input');
+        
+        if (chatHeader) chatHeader.innerHTML = `<h3>${currentConversation.participant}</h3>`;
+        if (chatInput) chatInput.style.display = 'block';
         
         displayMessages();
     }

@@ -1,34 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const username = localStorage.getItem('username');
-    
-    if (!isLoggedIn || isLoggedIn !== 'true') {
-        window.location.href = 'index.html';
-        return;
-    }
-    
-    document.getElementById('username-display').textContent = username;
+    setupPage();
     
     loadUserProfile();
     loadProfileStats();
     
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn.addEventListener('click', function() {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('username');
-        window.location.href = 'index.html';
-    });
-    
     const profileForm = document.getElementById('profile-form');
-    profileForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveProfileData();
-    });
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveProfileData();
+        });
+    }
     
     const changeAvatarBtn = document.querySelector('.change-avatar-btn');
-    changeAvatarBtn.addEventListener('click', function() {
-        alert('Avatar upload functionality would be implemented here');
-    });
+    if (changeAvatarBtn) {
+        changeAvatarBtn.addEventListener('click', function() {
+            alert('Avatar upload functionality would be implemented here');
+        });
+    }
 });
 
 function loadUserProfile() {
@@ -63,13 +52,18 @@ function loadProfileStats() {
         const today = new Date();
         const accountAge = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
         
-        document.getElementById('login-count').textContent = loginCount;
-        document.getElementById('last-login').textContent = lastLogin ? new Date(lastLogin).toLocaleString() : 'Never';
-        document.getElementById('account-age').textContent = accountAge + ' days';
+        const loginCountEl = document.getElementById('login-count');
+        const lastLoginEl = document.getElementById('last-login');
+        const accountAgeEl = document.getElementById('account-age');
+        const profileCompletionEl = document.getElementById('profile-completion');
+        
+        if (loginCountEl) loginCountEl.textContent = loginCount;
+        if (lastLoginEl) lastLoginEl.textContent = lastLogin ? new Date(lastLogin).toLocaleString() : 'Never';
+        if (accountAgeEl) accountAgeEl.textContent = accountAge + ' days';
         
         const profileData = JSON.parse(localStorage.getItem('profileData_' + user.id)) || {};
         const completion = calculateProfileCompletion(profileData);
-        document.getElementById('profile-completion').textContent = completion + '%';
+        if (profileCompletionEl) profileCompletionEl.textContent = completion + '%';
     }
 }
 

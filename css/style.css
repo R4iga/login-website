@@ -894,3 +894,42 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-badge.completed {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+}
+
+.status-badge.in-progress {
+    background: rgba(255, 152, 0, 0.2);
+    color: #FF9800;
+}
+
+.status-badge.pending {
+    background: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+}
+
+.role-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.role-badge.admin {
+    background: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+}
+
+.role-badge.user {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+}

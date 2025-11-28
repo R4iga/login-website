@@ -1,29 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const username = localStorage.getItem('username');
-    
-    if (!isLoggedIn || isLoggedIn !== 'true') {
-        window.location.href = 'index.html';
-        return;
-    }
-    
-    document.getElementById('username-display').textContent = username;
+    setupPage();
     
     loadReportsData();
-    initializeCharts();
     
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn.addEventListener('click', function() {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('username');
-        window.location.href = 'index.html';
-    });
+    // Delay chart initialization to ensure DOM is ready
+    setTimeout(() => {
+        initializeCharts();
+    }, 100);
     
     const dateRange = document.getElementById('date-range');
-    dateRange.addEventListener('change', function() {
-        loadReportsData();
-        updateCharts();
-    });
+    if (dateRange) {
+        dateRange.addEventListener('change', function() {
+            loadReportsData();
+            updateCharts();
+        });
+    }
 });
 
 function loadReportsData() {
@@ -113,79 +104,96 @@ function loadDetailedReports() {
 }
 
 function initializeCharts() {
-    const activityCtx = document.getElementById('activity-chart').getContext('2d');
-    const demographicsCtx = document.getElementById('demographics-chart').getContext('2d');
+    if (typeof Chart === 'undefined') {
+        console.log('Chart.js not loaded, skipping chart initialization');
+        return;
+    }
     
-    new Chart(activityCtx, {
-        type: 'line',
-        data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            datasets: [{
-                label: 'Active Users',
-                data: [65, 78, 90, 81, 96, 85, 92],
-                borderColor: '#4CAF50',
-                backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: 'white'
-                    }
-                }
+    const activityCanvas = document.getElementById('activity-chart');
+    const demographicsCanvas = document.getElementById('demographics-chart');
+    
+    if (!activityCanvas || !demographicsCanvas) {
+        console.log('Chart canvases not found');
+        return;
+    }
+    
+    const activityCtx = activityCanvas.getContext('2d');
+    const demographicsCtx = demographicsCanvas.getContext('2d');
+    
+    try {
+        new Chart(activityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Active Users',
+                    data: [65, 78, 90, 81, 96, 85, 92],
+                    borderColor: '#4CAF50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    tension: 0.4
+                }]
             },
-            scales: {
-                y: {
-                    ticks: {
-                        color: 'white'
-                    },
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
                     }
                 },
-                x: {
-                    ticks: {
-                        color: 'white'
+                scales: {
+                    y: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
                     },
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
                     }
                 }
             }
-        }
-    });
-    
-    new Chart(demographicsCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
-            datasets: [{
-                data: [25, 35, 20, 15, 5],
-                backgroundColor: [
-                    '#4CAF50',
-                    '#2196F3',
-                    '#FF9800',
-                    '#9C27B0',
-                    '#F44336'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: 'white'
+        });
+        
+        new Chart(demographicsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
+                datasets: [{
+                    data: [25, 35, 20, 15, 5],
+                    backgroundColor: [
+                        '#4CAF50',
+                        '#2196F3',
+                        '#FF9800',
+                        '#9C27B0',
+                        '#F44336'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Error initializing charts:', error);
+    }
 }
 
 function updateCharts() {

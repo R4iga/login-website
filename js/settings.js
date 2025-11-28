@@ -1,22 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const username = localStorage.getItem('username');
-    
-    if (!isLoggedIn || isLoggedIn !== 'true') {
-        window.location.href = 'index.html';
-        return;
-    }
-    
-    document.getElementById('username-display').textContent = username;
+    setupPage();
     
     loadSettings();
-    
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn.addEventListener('click', function() {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('username');
-        window.location.href = 'index.html';
-    });
     
     const tabBtns = document.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => {
@@ -29,33 +14,42 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
-            document.getElementById(tabName + '-tab').classList.add('active');
+            const targetTab = document.getElementById(tabName + '-tab');
+            if (targetTab) targetTab.classList.add('active');
         });
     });
     
     const accountForm = document.getElementById('account-form');
-    accountForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        updateAccount();
-    });
+    if (accountForm) {
+        accountForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateAccount();
+        });
+    }
     
     const securityForm = document.getElementById('security-form');
-    securityForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        updatePassword();
-    });
+    if (securityForm) {
+        securityForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            updatePassword();
+        });
+    }
     
     const apiForm = document.getElementById('api-form');
-    apiForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveApiSettings();
-    });
+    if (apiForm) {
+        apiForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveApiSettings();
+        });
+    }
     
     const temperatureSlider = document.getElementById('api-temperature');
     const temperatureValue = document.getElementById('temperature-value');
-    temperatureSlider.addEventListener('input', function() {
-        temperatureValue.textContent = this.value;
-    });
+    if (temperatureSlider && temperatureValue) {
+        temperatureSlider.addEventListener('input', function() {
+            temperatureValue.textContent = this.value;
+        });
+    }
 });
 
 function loadSettings() {
@@ -155,11 +149,16 @@ function saveNotificationSettings() {
     const user = users.find(u => u.username === username);
     
     if (user) {
+        const emailNotif = document.getElementById('email-notifications');
+        const pushNotif = document.getElementById('push-notifications');
+        const smsNotif = document.getElementById('sms-notifications');
+        const marketingEmails = document.getElementById('marketing-emails');
+        
         const settings = {
-            emailNotifications: document.getElementById('email-notifications').checked,
-            pushNotifications: document.getElementById('push-notifications').checked,
-            smsNotifications: document.getElementById('sms-notifications').checked,
-            marketingEmails: document.getElementById('marketing-emails').checked
+            emailNotifications: emailNotif ? emailNotif.checked : true,
+            pushNotifications: pushNotif ? pushNotif.checked : true,
+            smsNotifications: smsNotif ? smsNotif.checked : false,
+            marketingEmails: marketingEmails ? marketingEmails.checked : false
         };
         
         localStorage.setItem('userSettings_' + user.id, JSON.stringify(settings));
@@ -173,11 +172,16 @@ function savePrivacySettings() {
     const user = users.find(u => u.username === username);
     
     if (user) {
+        const profilePublic = document.getElementById('profile-public');
+        const showEmail = document.getElementById('show-email');
+        const allowMessages = document.getElementById('allow-messages');
+        const dataAnalytics = document.getElementById('data-analytics');
+        
         const settings = JSON.parse(localStorage.getItem('userSettings_' + user.id)) || {};
-        settings.profilePublic = document.getElementById('profile-public').checked;
-        settings.showEmail = document.getElementById('show-email').checked;
-        settings.allowMessages = document.getElementById('allow-messages').checked;
-        settings.dataAnalytics = document.getElementById('data-analytics').checked;
+        settings.profilePublic = profilePublic ? profilePublic.checked : false;
+        settings.showEmail = showEmail ? showEmail.checked : false;
+        settings.allowMessages = allowMessages ? allowMessages.checked : true;
+        settings.dataAnalytics = dataAnalytics ? dataAnalytics.checked : false;
         
         localStorage.setItem('userSettings_' + user.id, JSON.stringify(settings));
         showSuccess('Privacy settings saved!');
