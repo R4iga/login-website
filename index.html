@@ -3,108 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Simple & Clean</title>
+    <title>Professional Platform - Secure & Reliable</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/clean.css">
+    <link rel="stylesheet" href="css/professional.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>SecurePlatform</span>
-                </div>
-                <nav class="nav">
-                    <a href="#features" class="nav-link">Features</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <button class="btn btn-primary" onclick="showLoginModal()">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Login
-                    </button>
-                </nav>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>ProPlatform</span>
             </div>
-        </header>
+            <div class="nav-menu">
+                <a href="#hero" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="#features" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    Features
+                </a>
+                <a href="#about" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    About
+                </a>
+                <a href="#contact" class="nav-link">
+                    <i class="fas fa-envelope"></i>
+                    Contact
+                </a>
+                <button class="btn btn-primary btn-sm" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+            </div>
+        </div>
+    </nav>
 
-        <!-- Hero Section -->
-        <section class="hero">
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">Welcome to Your Secure Platform</h1>
-                <p class="hero-subtitle">Simple, reliable, and user-friendly</p>
-                <div class="hero-buttons">
-                    <button class="btn btn-primary btn-large" onclick="showLoginModal()">
-                        <i class="fas fa-rocket"></i>
-                        Get Started
-                    </button>
-                    <button class="btn btn-secondary btn-large" onclick="scrollToSection('features')">
-                        <i class="fas fa-info-circle"></i>
-                        Learn More
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features" id="features">
-            <div class="container">
-                <h2 class="section-title">Why Choose Our Platform?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h3>Secure</h3>
-                        <p>Your data is protected with enterprise-grade security</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3>Fast</h3>
-                        <p>Lightning-fast performance with instant loading</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3>Responsive</h3>
-                        <p>Works perfectly on all devices and screen sizes</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <h3>Easy to Use</h3>
-                        <p>Intuitive interface designed for all users</p>
+                <div class="hero-text">
+                    <h1 class="hero-title">Welcome to Your Professional Platform</h1>
+                    <p class="hero-subtitle">Secure, reliable, and built for your success</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-xl" onclick="showLoginModal()">
+                            <i class="fas fa-rocket"></i>
+                            Get Started Now
+                        </button>
+                        <button class="btn btn-secondary btn-xl" onclick="scrollToSection('features')">
+                            <i class="fas fa-play-circle"></i>
+                            Learn More
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- About Section -->
-        <section class="about" id="about">
-            <div class="container">
-                <h2 class="section-title">About Our Platform</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <h3>Our Mission</h3>
-                        <p>We believe in creating simple, reliable, and secure web applications that everyone can use. Our platform is built with the user in mind, focusing on functionality over complexity.</p>
-                        
-                        <h3>What We Offer</h3>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> User authentication and management</li>
-                            <li><i class="fas fa-check"></i> Secure data storage and protection</li>
-                            <li><i class="fas fa-check"></i> Modern, responsive design</li>
-                            <li><i class="fas fa-check"></i> AI-powered chatbot assistance</li>
-                            <li><i class="fas fa-check"></i> Comprehensive reporting and analytics</li>
-                        </ul>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Powerful Features
+                </h2>
+                <p class="text-center text-muted">Everything you need to succeed</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Enterprise Security</h3>
+                    <p>Bank-level encryption and protection for your data</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Optimized performance with instant response times</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Team Collaboration</h3>
+                    <p>Work together with unlimited team members</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Comprehensive insights and reporting tools</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Ready</h3>
+                    <p>Perfect experience on all devices and platforms</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    About Our Platform
+                </h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>We are dedicated to providing the most secure, reliable, and user-friendly platform for businesses and individuals worldwide. Our commitment to excellence drives everything we do.</p>
+                    
+                    <h3>What We Offer</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Secure user authentication and management</li>
+                        <li><i class="fas fa-check"></i> Enterprise-grade data protection</li>
+                        <li><i class="fas fa-check"></i> Modern, responsive design</li>
+                        <li><i class="fas fa-check"></i> AI-powered assistance and automation</li>
+                        <li><i class="fas fa-check"></i> Comprehensive analytics and reporting</li>
+                        <li><i class="fas fa-check"></i> 24/7 customer support</li>
+                    </ul>
+                    
+                    <h3>Our Values</h3>
+                    <div class="values-grid">
+                        <div class="value-item">
+                            <h4>Security First</h4>
+                            <p>Your data protection is our top priority</p>
+                        </div>
+                        <div class="value-item">
+                            <h4>User-Centric</h4>
+                            <p>We design with your needs in mind</p>
+                        </div>
+                        <div class="value-item">
+                            <h4>Innovation</h4>
+                            <p>Continuously improving and evolving our platform</p>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="about-stats">
                     <div class="stat-item">
-                        <div class="stat-number">1000+</div>
+                        <div class="stat-number">10,000+</div>
                         <div class="stat-label">Active Users</div>
                     </div>
                     <div class="stat-item">
@@ -115,30 +173,87 @@
                         <div class="stat-number">24/7</div>
                         <div class="stat-label">Support</div>
                     </div>
+                    <div class="stat-item">
+                        <div class="stat-number">150+</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- CTA Section -->
-        <section class="cta">
-            <div class="container">
-                <div class="cta-content">
-                    <h2 class="section-title">Ready to Get Started?</h2>
-                    <p>Join thousands of satisfied users today</p>
-                    <div class="cta-buttons">
-                        <button class="btn btn-primary btn-large" onclick="showLoginModal()">
-                            <i class="fas fa-user-plus"></i>
-                            Create Account
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-envelope"></i>
+                    Get In Touch
+                </h2>
+                <p class="text-center text-muted">We're here to help you succeed</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>Support</h3>
+                        <p>24/7 customer support via chat, email, and phone</p>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-comments"></i>
+                            Live Chat
                         </button>
-                        <button class="btn btn-secondary btn-large" onclick="showLoginModal()">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Sign In
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>support@platform.com</p>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Call Us</h3>
+                        <p>+1 (800) 123-4567</p>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-phone"></i>
+                            Call Now
                         </button>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="section-title">Ready to Transform Your Business?</h2>
+                <p class="text-center text-muted">Join thousands of satisfied customers worldwide</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary btn-xl" onclick="showLoginModal()">
+                        <i class="fas fa-rocket"></i>
+                        Start Free Trial
+                    </button>
+                    <button class="btn btn-secondary btn-xl" onclick="scrollToSection('features')">
+                        <i class="fas fa-info-circle"></i>
+                        View Pricing Plans
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Login Modal -->
     <div id="login-modal" class="modal">
@@ -152,12 +267,18 @@
             <div class="modal-body">
                 <form id="loginForm" onsubmit="handleLogin(event)">
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" required>
+                        <label class="form-label" for="username">
+                            <i class="fas fa-user"></i>
+                            Username
+                        </label>
+                        <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
+                        <label class="form-label" for="password">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
                     </div>
                     <div class="form-options">
                         <label class="checkbox-label">
@@ -171,7 +292,7 @@
                         Login
                     </button>
                     <div class="register-link">
-                        Don't have an account? <a href="register.html">Sign up here</a>
+                        New to platform? <a href="register.html">Create account</a>
                     </div>
                 </form>
             </div>
@@ -181,6 +302,7 @@
     <!-- Success/Error Messages -->
     <div id="message" class="message"></div>
 
-    <script src="js/clean.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/professional.js"></script>
 </body>
 </html>
