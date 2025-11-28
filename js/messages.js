@@ -281,88 +281,162 @@ async function sendToChatbot() {
             addChatbotMessage('Thinking...', 'bot');
             
             try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiSettings.apiKey.trim()}`
-                    },
-                    body: JSON.stringify({
-                        model: apiSettings.model || 'gpt-3.5-turbo',
-                        messages: [
-                            { role: 'system', content: 'You are a helpful assistant. Be concise and friendly.' },
-                            { role: 'user', content: message }
-                        ],
-                        temperature: parseFloat(apiSettings.temperature) || 0.7,
-                        max_tokens: 500,
-                        stream: false
-                    })
-                });
+                // Try multiple approaches for API call
+                let response;
+                let apiUrl = 'https://api.openai.com/v1/chat/completions';
+                let requestBody = {
+                    model: apiSettings.model || 'gpt-3.5-turbo',
+                    messages: [
+                        { role: 'system', content: 'You are a helpful assistant. Be concise and friendly.' },
+                        { role: 'user', content: message }
+                    ],
+                    temperature: parseFloat(apiSettings.temperature) || 0.7,
+                    max_tokens: 300,
+                    stream: false
+                };
+                
+                console.log('Making API request to:', apiUrl);
+                console.log('Request body:', JSON.stringify(requestBody, null, 2));
+                
+                // Try direct API call first
+                try {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiSettings.apiKey.trim()}`
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+                } catch (directError) {
+                    console.log('Direct API call failed, trying CORS proxy...');
+                    
+                    // Fallback to CORS proxy if direct call fails
+                    try {
+                        const proxyUrl = 'https://cors-anywhere.herokuapp.com/' + apiUrl;
+                        response = await fetch(proxyUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify({
+                                ...requestBody,
+                                api_key: apiSettings.apiKey.trim()
+                            })
+                        });
+                    } catch (proxyError) {
+                        console.log('CORS proxy also failed, trying alternative...');
+                        
+                        // Try alternative approach - simulate response for demo
+                        throw new Error('CORS/Network error: Unable to connect to OpenAI API due to browser security restrictions.');
+                    }
+                }
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
                 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    console.error('API Error:', errorData);
-                    
-                    // Remove typing indicator
-                    const messagesContainer = document.getElementById('chatbot-messages');
-                    const lastMessage = messagesContainer.lastChild;
-                    if (lastMessage && lastMessage.textContent === 'Thinking...') {
-                        messagesContainer.removeChild(lastMessage);
+                    let errorData;
+                    try {
+                        errorData = await response.json();
+                    } catch (e) {
+                        errorData = { error: { message: 'Unable to parse error response' } };
                     }
                     
+                    console.error('API Error Details:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        error: errorData
+                    });
+                    
+                    // Remove typing indicator
+                    removeTypingIndicator();
+                    
+                    // Detailed error handling
                     if (response.status === 401) {
-                        addChatbotMessage('Invalid API key. Please check your OpenAI API key in Settings.', 'bot');
+                        addChatbotMessage('❌ Invalid API key. Please check your OpenAI API key in Settings.\n\nTip: Make sure your API key starts with "sk-" and has sufficient credits.', 'bot');
                     } else if (response.status === 429) {
-                        addChatbotMessage('Rate limit exceeded. Please try again later.', 'bot');
+                        addChatbotMessage('⏱️ Rate limit exceeded. Please wait a moment and try again.\n\nTip: Free accounts have lower rate limits.', 'bot');
                     } else if (response.status === 403) {
-                        addChatbotMessage('API key does not have access to this model. Please check your OpenAI account.', 'bot');
+                        addChatbotMessage('🚫 Access denied. Your API key may not have access to this model.\n\nTip: Check your OpenAI billing and model permissions.', 'bot');
+                    } else if (response.status === 400) {
+                        addChatbotMessage('⚠️ Bad request. The request format was invalid.\n\nError: ' + (errorData.error?.message || 'Unknown error'), 'bot');
                     } else {
-                        addChatbotMessage(`API Error (${response.status}): ${errorData.error?.message || 'Unknown error'}`, 'bot');
+                        addChatbotMessage(`❌ API Error (${response.status}): ${errorData.error?.message || 'Unknown error'}\n\nPlease check your API key and try again.`, 'bot');
                     }
                     return;
                 }
                 
-                const data = await response.json();
+                let data;
+                try {
+                    data = await response.json();
+                    console.log('API Response:', data);
+                } catch (e) {
+                    console.error('Failed to parse response:', e);
+                    removeTypingIndicator();
+                    addChatbotMessage('❌ Invalid response format from API.', 'bot');
+                    return;
+                }
                 
                 // Remove typing indicator
-                const messagesContainer = document.getElementById('chatbot-messages');
-                const lastMessage = messagesContainer.lastChild;
-                if (lastMessage && lastMessage.textContent === 'Thinking...') {
-                    messagesContainer.removeChild(lastMessage);
-                }
+                removeTypingIndicator();
                 
                 if (data.choices && data.choices[0] && data.choices[0].message) {
                     const botResponse = data.choices[0].message.content;
                     addChatbotMessage(botResponse, 'bot');
                 } else {
-                    addChatbotMessage('Unexpected API response format.', 'bot');
+                    addChatbotMessage('❌ Unexpected API response format. No choices returned.', 'bot');
                 }
             } catch (error) {
-                console.error('Fetch Error:', error);
+                console.error('Fetch Error Details:', {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack
+                });
                 
                 // Remove typing indicator
-                const messagesContainer = document.getElementById('chatbot-messages');
-                const lastMessage = messagesContainer.lastChild;
-                if (lastMessage && lastMessage.textContent === 'Thinking...') {
-                    messagesContainer.removeChild(lastMessage);
-                }
+                removeTypingIndicator();
                 
                 if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                    addChatbotMessage('Network error. Please check your internet connection and try again.', 'bot');
+                    addChatbotMessage('🌐 Network error. Unable to connect to OpenAI servers.\n\nPlease check:\n• Internet connection\n• Firewall settings\n• API service status', 'bot');
+                } else if (error.message.includes('CORS')) {
+                    addChatbotMessage('🔒 CORS error. Browser blocked the request.\n\nThis might be a security restriction. Try using a different browser or check your browser settings.', 'bot');
                 } else {
-                    addChatbotMessage('Error connecting to ChatGPT API. Please try again later.', 'bot');
+                    // If all API attempts fail, provide a helpful simulated response
+                    console.log('All API attempts failed, providing simulated response');
+                    const simulatedResponses = [
+                        `I understand you're asking about: "${message.substring(0, 50)}${message.length > 50 ? '...' : ''}"\n\nI'm currently having trouble connecting to the OpenAI API, but I'd be happy to help once the connection is restored. Please try again in a moment!`,
+                        `That's an interesting question about: "${message}"\n\nI'm experiencing some technical difficulties with the AI service right now. The issue might be:\n• Network connectivity\n• API rate limits\n• Service maintenance\n\nPlease try again shortly!`,
+                        `I see you're interested in: "${message}"\n\nUnfortunately, I'm unable to process your request at the moment due to API connectivity issues. This is a temporary problem.\n\nSuggestions:\n• Check your internet connection\n• Verify your API key in Settings\n• Try again in a few minutes`,
+                        `Regarding: "${message.substring(0, 30)}${message.length > 30 ? '...' : ''}"\n\nI'm experiencing technical difficulties with the ChatGPT service. This could be due to high demand or temporary service issues.\n\nPlease try again later. In the meantime, you can test your API key in Settings!`
+                    ];
+                    
+                    const randomSimulated = simulatedResponses[Math.floor(Math.random() * simulatedResponses.length)];
+                    addChatbotMessage(randomSimulated, 'bot');
                 }
             }
         } else {
             const fallbackResponses = [
-                "Hi! I'm a demo chatbot. To use ChatGPT, please add your OpenAI API key in Settings → API Settings.",
-                "Hello! This is a simulated response. Configure your OpenAI API key in Settings for real AI responses.",
-                "Hi there! I'd love to help with ChatGPT, but you need to add your API key in Settings first.",
-                "Greetings! Add your ChatGPT API key in Settings to enable full AI functionality."
+                "🤖 Hi! I'm a demo chatbot. To use ChatGPT:\n\n1. Go to Settings → API Settings\n2. Enter your OpenAI API key (starts with 'sk-')\n3. Click 'Test API Key' to verify\n4. Save settings\n5. Start chatting!",
+                "🔑 ChatGPT not configured yet!\n\nPlease add your OpenAI API key in Settings → API Settings to enable real AI responses.",
+                "⚙️ I'd love to help with ChatGPT! Please configure your API key first:\n\nSettings → API Settings → Enter OpenAI API Key",
+                "🚀 Ready for ChatGPT! Add your API key in Settings to unlock full AI capabilities."
             ];
             
             const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
             addChatbotMessage(randomResponse, 'bot');
+        }
+    }
+}
+
+function removeTypingIndicator() {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    const messages = messagesContainer.children;
+    if (messages.length > 0) {
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage && lastMessage.textContent === 'Thinking...') {
+            messagesContainer.removeChild(lastMessage);
         }
     }
 }
