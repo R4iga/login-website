@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - My Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Reports & Analytics</h1>
+            <div class="user-info">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <nav class="dashboard-nav">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="settings.html" class="nav-link">Settings</a>
+            <a href="reports.html" class="nav-link active">Reports</a>
+            <a href="messages.html" class="nav-link">Messages</a>
+        </nav>
+        
+        <main class="dashboard-content">
+            <div class="reports-container">
+                <div class="reports-header">
+                    <h2>Analytics Overview</h2>
+                    <div class="date-filter">
+                        <select id="date-range">
+                            <option value="7">Last 7 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="90">Last 90 days</option>
+                            <option value="365">Last year</option>
+                        </select>
+                        <button class="export-btn" onclick="exportReports()">Export PDF</button>
+                    </div>
+                </div>
+                
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <p class="stat-number" id="total-users-report">0</p>
+                        <span class="stat-change positive">+12%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Sessions</h3>
+                        <p class="stat-number" id="active-sessions">0</p>
+                        <span class="stat-change positive">+8%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>New Registrations</h3>
+                        <p class="stat-number" id="new-registrations">0</p>
+                        <span class="stat-change negative">-3%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Messages Sent</h3>
+                        <p class="stat-number" id="messages-sent">0</p>
+                        <span class="stat-change positive">+25%</span>
+                    </div>
+                </div>
+                
+                <div class="reports-grid">
+                    <div class="report-section">
+                        <h3>User Activity</h3>
+                        <div class="chart-container">
+                            <canvas id="activity-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="report-section">
+                        <h3>User Demographics</h3>
+                        <div class="chart-container">
+                            <canvas id="demographics-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="report-section">
+                        <h3>Login Statistics</h3>
+                        <div class="login-stats">
+                            <div class="login-stat-item">
+                                <span>Daily Average</span>
+                                <strong id="daily-logins">0</strong>
+                            </div>
+                            <div class="login-stat-item">
+                                <span>Peak Hour</span>
+                                <strong id="peak-hour">2:00 PM</strong>
+                            </div>
+                            <div class="login-stat-item">
+                                <span>Most Active Day</span>
+                                <strong id="active-day">Monday</strong>
+                            </div>
+                            <div class="login-stat-item">
+                                <span>Average Session</span>
+                                <strong id="avg-session">15 min</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-section">
+                        <h3>System Performance</h3>
+                        <div class="performance-metrics">
+                            <div class="metric-item">
+                                <span>Uptime</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 99.9%"></div>
+                                </div>
+                                <span>99.9%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Response Time</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 85%"></div>
+                                </div>
+                                <span>120ms</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Error Rate</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 2%"></div>
+                                </div>
+                                <span>0.2%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detailed-reports">
+                    <h3>Detailed Reports</h3>
+                    <div class="report-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Report Type</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reports-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>

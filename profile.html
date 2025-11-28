@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - My Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Profile</h1>
+            <div class="user-info">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <nav class="dashboard-nav">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="profile.html" class="nav-link active">Profile</a>
+            <a href="settings.html" class="nav-link">Settings</a>
+            <a href="reports.html" class="nav-link">Reports</a>
+            <a href="messages.html" class="nav-link">Messages</a>
+        </nav>
+        
+        <main class="dashboard-content">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="https://picsum.photos/seed/avatar/150/150.jpg" alt="Profile Avatar" id="profile-avatar">
+                        <button class="change-avatar-btn">Change Avatar</button>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profile-username">Loading...</h2>
+                        <p id="profile-email">Loading...</p>
+                        <p id="profile-role">Loading...</p>
+                        <p id="profile-joined">Loading...</p>
+                    </div>
+                </div>
+                
+                <div class="profile-sections">
+                    <div class="profile-section">
+                        <h3>Personal Information</h3>
+                        <form id="profile-form">
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" id="first-name" placeholder="Enter your first name">
+                                </div>
+                                <div class="input-group">
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" id="last-name" placeholder="Enter your last name">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="bio">Bio</label>
+                                <textarea id="bio" rows="4" placeholder="Tell us about yourself"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="tel" id="phone" placeholder="Enter your phone number">
+                                </div>
+                                <div class="input-group">
+                                    <label for="location">Location</label>
+                                    <input type="text" id="location" placeholder="Enter your location">
+                                </div>
+                            </div>
+                            <button type="submit" class="save-btn">Save Changes</button>
+                        </form>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h3>Account Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h4>Login Count</h4>
+                                <p id="login-count">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Last Login</h4>
+                                <p id="last-login">Never</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Account Age</h4>
+                                <p id="account-age">0 days</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Profile Completion</h4>
+                                <p id="profile-completion">0%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/profile.js"></script>
+</body>
+</html>

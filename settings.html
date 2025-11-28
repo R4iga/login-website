@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - My Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Settings</h1>
+            <div class="user-info">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <nav class="dashboard-nav">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="settings.html" class="nav-link active">Settings</a>
+            <a href="reports.html" class="nav-link">Reports</a>
+            <a href="messages.html" class="nav-link">Messages</a>
+        </nav>
+        
+        <main class="dashboard-content">
+            <div class="settings-container">
+                <div class="settings-tabs">
+                    <button class="tab-btn active" data-tab="account">Account</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                    <button class="tab-btn" data-tab="notifications">Notifications</button>
+                    <button class="tab-btn" data-tab="privacy">Privacy</button>
+                    <button class="tab-btn" data-tab="api">API Settings</button>
+                </div>
+                
+                <div class="settings-content">
+                    <div class="tab-content active" id="account-tab">
+                        <div class="settings-section">
+                            <h3>Account Settings</h3>
+                            <form id="account-form">
+                                <div class="input-group">
+                                    <label for="change-username">Username</label>
+                                    <input type="text" id="change-username" placeholder="New username">
+                                </div>
+                                <div class="input-group">
+                                    <label for="change-email">Email</label>
+                                    <input type="email" id="change-email" placeholder="New email">
+                                </div>
+                                <button type="submit" class="save-btn">Update Account</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="security-tab">
+                        <div class="settings-section">
+                            <h3>Security Settings</h3>
+                            <form id="security-form">
+                                <div class="input-group">
+                                    <label for="current-password">Current Password</label>
+                                    <input type="password" id="current-password" placeholder="Enter current password">
+                                </div>
+                                <div class="input-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password" placeholder="Enter new password">
+                                </div>
+                                <div class="input-group">
+                                    <label for="confirm-password">Confirm New Password</label>
+                                    <input type="password" id="confirm-password" placeholder="Confirm new password">
+                                </div>
+                                <button type="submit" class="save-btn">Update Password</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="notifications-tab">
+                        <div class="settings-section">
+                            <h3>Notification Preferences</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="email-notifications" checked>
+                                    <span>Email Notifications</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="push-notifications" checked>
+                                    <span>Push Notifications</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="sms-notifications">
+                                    <span>SMS Notifications</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="marketing-emails">
+                                    <span>Marketing Emails</span>
+                                </label>
+                            </div>
+                            <button class="save-btn" onclick="saveNotificationSettings()">Save Preferences</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="privacy-tab">
+                        <div class="settings-section">
+                            <h3>Privacy Settings</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="profile-public">
+                                    <span>Make Profile Public</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="show-email">
+                                    <span>Show Email in Profile</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="allow-messages" checked>
+                                    <span>Allow Messages from Other Users</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="data-analytics">
+                                    <span>Participate in Analytics</span>
+                                </label>
+                            </div>
+                            <button class="save-btn" onclick="savePrivacySettings()">Save Privacy Settings</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="api-tab">
+                        <div class="settings-section">
+                            <h3>ChatGPT API Settings</h3>
+                            <form id="api-form">
+                                <div class="input-group">
+                                    <label for="api-key">OpenAI API Key</label>
+                                    <input type="password" id="api-key" placeholder="sk-..." value="">
+                                    <small>Enter your OpenAI API key to enable the chatbot feature</small>
+                                </div>
+                                <div class="input-group">
+                                    <label for="api-model">Model</label>
+                                    <select id="api-model">
+                                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                        <option value="gpt-4">GPT-4</option>
+                                        <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="api-temperature">Temperature (0-2)</label>
+                                    <input type="range" id="api-temperature" min="0" max="2" step="0.1" value="0.7">
+                                    <span id="temperature-value">0.7</span>
+                                </div>
+                                <button type="submit" class="save-btn">Save API Settings</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/settings.js"></script>
+</body>
+</html>

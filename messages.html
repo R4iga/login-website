@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - My Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Messages</h1>
+            <div class="user-info">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <nav class="dashboard-nav">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="settings.html" class="nav-link">Settings</a>
+            <a href="reports.html" class="nav-link">Reports</a>
+            <a href="messages.html" class="nav-link active">Messages</a>
+        </nav>
+        
+        <main class="dashboard-content">
+            <div class="messages-container">
+                <div class="messages-layout">
+                    <div class="conversations-list">
+                        <div class="conversations-header">
+                            <h3>Conversations</h3>
+                            <button class="new-message-btn" onclick="startNewConversation()">New Message</button>
+                        </div>
+                        <div class="search-bar">
+                            <input type="text" id="search-conversations" placeholder="Search conversations...">
+                        </div>
+                        <div class="conversations" id="conversations-list">
+                        </div>
+                    </div>
+                    
+                    <div class="chat-area">
+                        <div class="chat-header" id="chat-header">
+                            <h3>Select a conversation</h3>
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="welcome-message">
+                                <h3>Welcome to Messages</h3>
+                                <p>Select a conversation to start messaging or create a new conversation.</p>
+                            </div>
+                        </div>
+                        <div class="chat-input" id="chat-input" style="display: none;">
+                            <div class="input-container">
+                                <input type="text" id="message-input" placeholder="Type your message...">
+                                <button class="send-btn" onclick="sendMessage()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="new-conversation-modal" class="modal">
+        <div class="modal-content">
+            <h3>New Conversation</h3>
+            <form id="new-conversation-form">
+                <div class="input-group">
+                    <label for="recipient">Recipient</label>
+                    <select id="recipient">
+                        <option value="">Select a user...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="first-message">First Message</label>
+                    <textarea id="first-message" rows="3" placeholder="Type your first message..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="save-btn">Start Conversation</button>
+                    <button type="button" class="cancel-btn" onclick="closeNewConversationModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="chatbot-widget" id="chatbot-widget">
+        <div class="chatbot-toggle" onclick="toggleChatbot()">
+            <span id="chatbot-icon">💬</span>
+        </div>
+        <div class="chatbot-window" id="chatbot-window">
+            <div class="chatbot-header">
+                <h4>AI Assistant</h4>
+                <button onclick="toggleChatbot()">×</button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="bot-message">
+                    Hello! I'm your AI assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbot-input" placeholder="Ask me anything...">
+                <button onclick="sendToChatbot()">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/messages.js"></script>
+</body>
+</html>
