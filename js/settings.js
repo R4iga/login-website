@@ -194,14 +194,32 @@ function saveApiSettings() {
     const user = users.find(u => u.username === username);
     
     if (user) {
+        const apiKeyInput = document.getElementById('api-key');
+        const apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
+        const modelSelect = document.getElementById('api-model');
+        const model = modelSelect ? modelSelect.value : 'gpt-3.5-turbo';
+        const tempInput = document.getElementById('api-temperature');
+        const temperature = tempInput ? parseFloat(tempInput.value) : 0.7;
+        
+        // Validate API key format
+        if (apiKey && !apiKey.startsWith('sk-')) {
+            showError('Invalid API key format. OpenAI API keys should start with "sk-"');
+            return;
+        }
+        
         const apiSettings = {
-            apiKey: document.getElementById('api-key').value,
-            model: document.getElementById('api-model').value,
-            temperature: parseFloat(document.getElementById('api-temperature').value)
+            apiKey: apiKey,
+            model: model,
+            temperature: temperature
         };
         
         localStorage.setItem('apiSettings_' + user.id, JSON.stringify(apiSettings));
-        showSuccess('API settings saved!');
+        
+        if (apiKey) {
+            showSuccess('API settings saved! You can now use the chatbot.');
+        } else {
+            showSuccess('API settings saved! Add an API key to enable ChatGPT.');
+        }
     }
 }
 
@@ -233,6 +251,45 @@ function showSuccess(message) {
     document.body.appendChild(successDiv);
     
     setTimeout(() => {
-        successDiv.remove();
+        if (successDiv.parentNode) {
+            successDiv.parentNode.removeChild(successDiv);
+        }
     }, 3000);
+}
+
+async function testApiKey() {
+    const username = localStorage.getItem('username');
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.username === username);
+    
+    if (!user) return;
+    
+    const apiSettings = JSON.parse(localStorage.getItem('apiSettings_' + user.id)) || {};
+    
+    if (!apiSettings.apiKey || apiSettings.apiKey.trim() === '') {
+        showError('Please enter an API key first');
+        return;
+    }
+    
+    try {
+        const response = await fetch('https://api.openai.com/v1/models', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${apiSettings.apiKey.trim()}`
+            }
+        });
+        
+        if (response.ok) {
+            showSuccess('API key is valid!');
+        } else {
+            const errorData = await response.json().catch(() => ({}));
+            if (response.status === 401) {
+                showError('Invalid API key');
+            } else {
+                showError(`API Error: ${errorData.error?.message || 'Unknown error'}`);
+            }
+        }
+    } catch (error) {
+        showError('Network error. Please check your connection.');
+    }
 }

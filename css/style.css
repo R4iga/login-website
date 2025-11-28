@@ -345,6 +345,20 @@ body {
     cursor: pointer;
 }
 
+.test-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.test-btn:hover {
+    background: #1976D2;
+}
+
 .cancel-btn {
     background: #ff6b6b;
     color: white;

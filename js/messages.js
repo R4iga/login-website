@@ -276,39 +276,89 @@ async function sendToChatbot() {
             apiSettings = JSON.parse(localStorage.getItem('apiSettings_' + currentUser.id)) || {};
         }
         
-        if (apiSettings && apiSettings.apiKey) {
+        if (apiSettings && apiSettings.apiKey && apiSettings.apiKey.trim() !== '') {
+            // Show typing indicator
+            addChatbotMessage('Thinking...', 'bot');
+            
             try {
                 const response = await fetch('https://api.openai.com/v1/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiSettings.apiKey}`
+                        'Authorization': `Bearer ${apiSettings.apiKey.trim()}`
                     },
                     body: JSON.stringify({
                         model: apiSettings.model || 'gpt-3.5-turbo',
                         messages: [
+                            { role: 'system', content: 'You are a helpful assistant. Be concise and friendly.' },
                             { role: 'user', content: message }
                         ],
-                        temperature: apiSettings.temperature || 0.7
+                        temperature: parseFloat(apiSettings.temperature) || 0.7,
+                        max_tokens: 500,
+                        stream: false
                     })
                 });
                 
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('API Error:', errorData);
+                    
+                    // Remove typing indicator
+                    const messagesContainer = document.getElementById('chatbot-messages');
+                    const lastMessage = messagesContainer.lastChild;
+                    if (lastMessage && lastMessage.textContent === 'Thinking...') {
+                        messagesContainer.removeChild(lastMessage);
+                    }
+                    
+                    if (response.status === 401) {
+                        addChatbotMessage('Invalid API key. Please check your OpenAI API key in Settings.', 'bot');
+                    } else if (response.status === 429) {
+                        addChatbotMessage('Rate limit exceeded. Please try again later.', 'bot');
+                    } else if (response.status === 403) {
+                        addChatbotMessage('API key does not have access to this model. Please check your OpenAI account.', 'bot');
+                    } else {
+                        addChatbotMessage(`API Error (${response.status}): ${errorData.error?.message || 'Unknown error'}`, 'bot');
+                    }
+                    return;
+                }
+                
                 const data = await response.json();
                 
-                if (data.choices && data.choices[0]) {
+                // Remove typing indicator
+                const messagesContainer = document.getElementById('chatbot-messages');
+                const lastMessage = messagesContainer.lastChild;
+                if (lastMessage && lastMessage.textContent === 'Thinking...') {
+                    messagesContainer.removeChild(lastMessage);
+                }
+                
+                if (data.choices && data.choices[0] && data.choices[0].message) {
                     const botResponse = data.choices[0].message.content;
                     addChatbotMessage(botResponse, 'bot');
                 } else {
-                    addChatbotMessage('Sorry, I encountered an error with the API.', 'bot');
+                    addChatbotMessage('Unexpected API response format.', 'bot');
                 }
             } catch (error) {
-                addChatbotMessage('Error connecting to ChatGPT API. Please check your API key.', 'bot');
+                console.error('Fetch Error:', error);
+                
+                // Remove typing indicator
+                const messagesContainer = document.getElementById('chatbot-messages');
+                const lastMessage = messagesContainer.lastChild;
+                if (lastMessage && lastMessage.textContent === 'Thinking...') {
+                    messagesContainer.removeChild(lastMessage);
+                }
+                
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    addChatbotMessage('Network error. Please check your internet connection and try again.', 'bot');
+                } else {
+                    addChatbotMessage('Error connecting to ChatGPT API. Please try again later.', 'bot');
+                }
             }
         } else {
             const fallbackResponses = [
-                "I'm a demo chatbot. To use ChatGPT, please add your API key in Settings.",
-                "This is a simulated response. Configure your OpenAI API key in Settings for real responses.",
-                "I'd love to help! Add your ChatGPT API key in Settings to enable full functionality."
+                "Hi! I'm a demo chatbot. To use ChatGPT, please add your OpenAI API key in Settings → API Settings.",
+                "Hello! This is a simulated response. Configure your OpenAI API key in Settings for real AI responses.",
+                "Hi there! I'd love to help with ChatGPT, but you need to add your API key in Settings first.",
+                "Greetings! Add your ChatGPT API key in Settings to enable full AI functionality."
             ];
             
             const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
