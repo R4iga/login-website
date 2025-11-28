@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - My Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Welcome to Dashboard</h1>
+            <div class="user-info">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <main class="dashboard-content">
+            <div class="welcome-card">
+                <h2>Hello, <span id="user-name"></span>!</h2>
+                <p>You have successfully logged in to the system.</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Profile</h3>
+                    <p>View and edit your profile information.</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Settings</h3>
+                    <p>Manage your account settings.</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Reports</h3>
+                    <p>Access your reports and analytics.</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Messages</h3>
+                    <p>Check your messages and notifications.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
