@@ -3,61 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - My Website</title>
+    <title>Welcome - Professional Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="css/modern.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/professional.css">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-box card animate-fade-in">
-            <div class="card-header text-center">
-                <div class="mb-md">
-                    <i class="fas fa-user-circle icon-4xl text-primary"></i>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="logo-container animate__animated animate__fadeIn">
+                <div class="logo">
+                    <i class="fas fa-rocket icon-4xl text-primary animate-pulse"></i>
                 </div>
-                <h2 class="text-xl font-bold mb-sm">Welcome Back</h2>
-                <p class="text-muted">Sign in to your account to continue</p>
+                <h1 class="text-2xl font-bold text-primary mt-md mb-sm">Professional Platform</h1>
             </div>
-            <div class="card-body">
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label class="form-label" for="username">
-                            <i class="fas fa-user icon-sm"></i>
-                            Username
-                        </label>
-                        <input type="text" id="username" name="username" class="input" placeholder="Enter your username" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="password">
-                            <i class="fas fa-lock icon-sm"></i>
-                            Password
-                        </label>
-                        <input type="password" id="password" name="password" class="input" placeholder="Enter your password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-lg w-full">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Sign In
-                    </button>
-                    <div id="error-message" class="toast toast-error"></div>
-                </form>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
             </div>
-            <div class="card-footer text-center">
-                <p class="text-muted">
-                    Don't have an account? 
-                    <a href="register.html" class="nav-link">
-                        <i class="fas fa-user-plus"></i>
-                        Register here
-                    </a>
+            <p class="text-muted animate__animated animate__fadeIn animate__delay-1s">Loading amazing experience...</p>
+        </div>
+    </div>
+
+    <!-- Particle Background -->
+    <div id="particles-canvas"></div>
+
+    <!-- Navigation -->
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <span>ProPlatform</span>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="#features" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    Features
+                </a>
+                <a href="#showcase" class="nav-link">
+                    <i class="fas fa-eye"></i>
+                    Showcase
+                </a>
+                <a href="#pricing" class="nav-link">
+                    <i class="fas fa-tags"></i>
+                    Pricing
+                </a>
+                <button class="btn btn-primary" onclick="showAuthModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Get Started
+                </button>
+            </div>
+            <button class="theme-toggle" onclick="toggleThemePanel()">
+                <i class="fas fa-palette"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <div class="hero-text animate__animated animate__fadeInLeft">
+                <h1 class="text-5xl font-bold mb-md">
+                    Welcome to the <span class="text-primary">Future</span> of Web Applications
+                </h1>
+                <p class="text-xl text-muted mb-lg">
+                    Experience the perfect blend of design, functionality, and innovation
                 </p>
+                <div class="hero-stats">
+                    <div class="stat-item animate__animated animate__fadeInUp animate__delay-1s">
+                        <div class="stat-number" data-count="1000">0</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-item animate__animated animate__fadeInUp animate__delay-2s">
+                        <div class="stat-number" data-count="99">0</div>
+                        <div class="stat-label">Uptime %</div>
+                    </div>
+                    <div class="stat-item animate__animated animate__fadeInUp animate__delay-3s">
+                        <div class="stat-number" data-count="24">0</div>
+                        <div class="stat-label">Support 24/7</div>
+                    </div>
+                </div>
+                <div class="hero-actions animate__animated animate__fadeInUp animate__delay-4s">
+                    <button class="btn btn-primary btn-lg" onclick="showAuthModal()">
+                        <i class="fas fa-rocket mr-sm"></i>
+                        Start Your Journey
+                    </button>
+                    <button class="btn btn-secondary btn-lg" onclick="scrollToSection('features')">
+                        <i class="fas fa-play-circle mr-sm"></i>
+                        Watch Demo
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual animate__animated animate__fadeInRight">
+                <div class="floating-elements">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="hero-graphic">
+                    <div class="rotating-cube">
+                        <div class="cube-face cube-front"></div>
+                        <div class="cube-face cube-back"></div>
+                        <div class="cube-face cube-right"></div>
+                        <div class="cube-face cube-left"></div>
+                        <div class="cube-face cube-top"></div>
+                        <div class="cube-face cube-bottom"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header animate__animated animate__fadeIn">
+                <h2 class="text-3xl font-bold text-center mb-lg">
+                    <i class="fas fa-star icon-lg mr-sm"></i>
+                    Powerful Features
+                </h2>
+                <p class="text-center text-muted text-lg">
+                    Everything you need to build amazing web applications
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-sm">Lightning Fast</h3>
+                    <p class="text-muted">Optimized performance with instant loading and smooth interactions</p>
+                </div>
+                
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-sm">Secure & Reliable</h3>
+                    <p class="text-muted">Enterprise-grade security with 99.9% uptime guarantee</p>
+                </div>
+                
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-3s">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-sm">Beautiful Design</h3>
+                    <p class="text-muted">Modern, responsive interface with unlimited customization</p>
+                </div>
+                
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-4s">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-sm">AI Powered</h3>
+                    <p class="text-muted">Integrated ChatGPT for intelligent assistance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container text-center animate__animated animate__fadeIn">
+            <h2 class="text-3xl font-bold mb-md">Ready to Get Started?</h2>
+            <p class="text-xl text-muted mb-lg">Join thousands of satisfied users today</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary btn-xl" onclick="showAuthModal('register')">
+                    <i class="fas fa-user-plus mr-sm"></i>
+                    Create Account
+                </button>
+                <button class="btn btn-secondary btn-xl" onclick="showAuthModal('login')">
+                    <i class="fas fa-sign-in-alt mr-sm"></i>
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="modal-header">
+                <h3 id="auth-title">Welcome Back</h3>
+                <button class="btn btn-ghost btn-sm" onclick="closeAuthModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="auth-content">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- Theme Customization Panel -->
+
+    <!-- Theme Panel -->
     <div class="theme-panel" id="themePanel">
         <div class="theme-header">
             <i class="fas fa-palette"></i>
-            <span>Customize</span>
+            <span>Customize Experience</span>
             <button class="btn btn-ghost btn-sm" onclick="toggleThemePanel()">
                 <i class="fas fa-times"></i>
             </button>
@@ -75,20 +230,31 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="form-label">Accent Color</label>
-                <div class="color-picker">
-                    <button class="color-btn" style="background: #6366f1" onclick="changeAccentColor('#6366f1')"></button>
-                    <button class="color-btn" style="background: #8b5cf6" onclick="changeAccentColor('#8b5cf6')"></button>
-                    <button class="color-btn" style="background: #10b981" onclick="changeAccentColor('#10b981')"></button>
-                    <button class="color-btn" style="background: #f59e0b" onclick="changeAccentColor('#f59e0b')"></button>
-                    <button class="color-btn" style="background: #ef4444" onclick="changeAccentColor('#ef4444')"></button>
+                <label class="form-label">Animation Speed</label>
+                <input type="range" id="animationSpeed" class="input" min="0.5" max="2" step="0.1" value="1">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Effects</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="particlesEnabled" checked>
+                        <span>Particle Effects</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="animationsEnabled" checked>
+                        <span>Page Animations</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="microInteractions" checked>
+                        <span>Micro-interactions</span>
+                    </label>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <script src="js/common.js"></script>
-    <script src="js/script.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/professional.js"></script>
 </body>
 </html>
