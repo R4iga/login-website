@@ -284,14 +284,28 @@ async function sendToChatbot() {
                 // Try multiple approaches for API call
                 let response;
                 let apiUrl = 'https://api.openai.com/v1/chat/completions';
+                const selectedModel = apiSettings.model || 'gpt-4o';
+                
+                // Adjust parameters based on model
+                let maxTokens = 300;
+                let systemMessage = 'You are a helpful assistant. Be concise and friendly.';
+                
+                if (selectedModel.includes('gpt-4')) {
+                    maxTokens = selectedModel.includes('mini') ? 300 : 500;
+                    systemMessage = 'You are GPT-4, a highly capable AI assistant. Be helpful, accurate, and concise.';
+                } else if (selectedModel === 'gpt-3.5-turbo') {
+                    maxTokens = 300;
+                    systemMessage = 'You are GPT-3.5 Turbo, a fast and efficient AI assistant. Be helpful and concise.';
+                }
+                
                 let requestBody = {
-                    model: apiSettings.model || 'gpt-3.5-turbo',
+                    model: selectedModel,
                     messages: [
-                        { role: 'system', content: 'You are a helpful assistant. Be concise and friendly.' },
+                        { role: 'system', content: systemMessage },
                         { role: 'user', content: message }
                     ],
                     temperature: parseFloat(apiSettings.temperature) || 0.7,
-                    max_tokens: 300,
+                    max_tokens: maxTokens,
                     stream: false
                 };
                 
@@ -359,7 +373,15 @@ async function sendToChatbot() {
                     } else if (response.status === 429) {
                         addChatbotMessage('⏱️ Rate limit exceeded. Please wait a moment and try again.\n\nTip: Free accounts have lower rate limits.', 'bot');
                     } else if (response.status === 403) {
-                        addChatbotMessage('🚫 Access denied. Your API key may not have access to this model.\n\nTip: Check your OpenAI billing and model permissions.', 'bot');
+                        let accessMessage = '🚫 Access denied. Your API key may not have access to this model.\n\nTip: Check your OpenAI billing and model permissions.';
+                        
+                        if (selectedModel.includes('gpt-4o')) {
+                            accessMessage += '\n\n⚠️ GPT-4o requires a paid OpenAI account with sufficient credits.';
+                        } else if (selectedModel.includes('gpt-4')) {
+                            accessMessage += '\n\n⚠️ GPT-4 models require API keys with GPT-4 access.';
+                        }
+                        
+                        addChatbotMessage(accessMessage, 'bot');
                     } else if (response.status === 400) {
                         addChatbotMessage('⚠️ Bad request. The request format was invalid.\n\nError: ' + (errorData.error?.message || 'Unknown error'), 'bot');
                     } else {

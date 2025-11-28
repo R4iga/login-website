@@ -208,9 +208,9 @@ function saveApiSettings() {
         }
         
         const apiSettings = {
-            apiKey: apiKey,
-            model: model,
-            temperature: temperature
+            apiKey: apiKeyInput ? apiKeyInput.value.trim() : '',
+            model: modelSelect ? modelSelect.value : 'gpt-4o',
+            temperature: tempInput ? parseFloat(tempInput.value) : 0.7
         };
         
         localStorage.setItem('apiSettings_' + user.id, JSON.stringify(apiSettings));
@@ -255,6 +255,38 @@ function showSuccess(message) {
             successDiv.parentNode.removeChild(successDiv);
         }
     }, 3000);
+}
+
+function updateModelInfo() {
+    const modelSelect = document.getElementById('api-model');
+    const modelInfo = document.getElementById('model-info');
+    
+    if (!modelSelect || !modelInfo) return;
+    
+    const selectedModel = modelSelect.value;
+    let infoText = '';
+    
+    switch(selectedModel) {
+        case 'gpt-3.5-turbo':
+            infoText = '⚡ GPT-3.5 Turbo: Fast and cost-effective for most tasks';
+            break;
+        case 'gpt-4':
+            infoText = '💪 GPT-4: Most powerful for complex reasoning tasks';
+            break;
+        case 'gpt-4-turbo':
+            infoText = '🚀 GPT-4 Turbo: Faster version of GPT-4';
+            break;
+        case 'gpt-4o':
+            infoText = '🧠 GPT-4o: OpenAI\'s newest model with human-like reasoning';
+            break;
+        case 'gpt-4o-mini':
+            infoText = '⚡ GPT-4o Mini: Fast and affordable version of GPT-4o';
+            break;
+        default:
+            infoText = '🤖 Select a model for your AI assistant';
+    }
+    
+    modelInfo.textContent = infoText;
 }
 
 async function testApiKey() {
