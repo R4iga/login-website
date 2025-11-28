@@ -1,5 +1,7 @@
 let currentConversation = null;
 let conversations = [];
+let lastApiCall = 0;
+const API_COOLDOWN = 1000; // 1 second between requests to avoid rate limits
 
 document.addEventListener('DOMContentLoaded', function() {
     setupPage();
@@ -266,6 +268,14 @@ async function sendToChatbot() {
     if (message) {
         addChatbotMessage(message, 'user');
         input.value = '';
+        
+        // Check rate limiting (reduced to 500ms for better UX)
+        const now = Date.now();
+        if (now - lastApiCall < API_COOLDOWN) {
+            addChatbotMessage('⏱️ Please wait a moment before sending another message...', 'bot');
+            return;
+        }
+        lastApiCall = now;
         
         const username = localStorage.getItem('username');
         const users = JSON.parse(localStorage.getItem('users')) || [];
